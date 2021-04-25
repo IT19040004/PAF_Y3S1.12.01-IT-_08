@@ -19,6 +19,31 @@ private Connection connect()
 public String insertItem(String code, String name, String price, String desc, String qua,String country) 
  { 
  String output = ""; 
+
+if(code.isEmpty() || name.isEmpty() ||price.isEmpty() ||desc.isEmpty() ||qua.isEmpty() ||country.isEmpty() ){
+
+output ="Please Fill all text boxes";
+
+}
+else if  (!code.matches("[0-9]+")) {
+	 
+	 output=" invalid code format!  ";
+ }
+else if (price.length() < 2) {
+	 
+	 output=" price should be greater than 2! ";
+}
+
+else if (desc.length()<20) {
+	 
+	 output="description should greater than 20 letters";
+ }
+else if  (!qua.matches("[0-9]+")) {
+	 
+	 output=" pleace enter only numbers for the quantity";
+ }
+else{
+
  try
  { 
  Connection con = connect(); 
@@ -46,6 +71,8 @@ public String insertItem(String code, String name, String price, String desc, St
  output = "Error while inserting the item."; 
  System.err.println(e.getMessage()); 
  } 
+
+ }
  return output; 
  } 
 public String readItems() 
