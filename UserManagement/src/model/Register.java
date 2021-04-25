@@ -1,6 +1,7 @@
 package model;
 
 import java.sql.*;
+import java.util.regex.Pattern;
 
 public class Register {
 
@@ -21,9 +22,14 @@ public class Register {
 	 }
 	public String insertRegister(String name, String email, String password, String repassword)
 	 {
+	 
 	 String output = "";
 	 try
-	 {
+	 {if(name.isEmpty() || email.isEmpty() || password.isEmpty() || repassword.isEmpty()) {
+		 output = "Inserted Unsuccessfully..Please fill text Boxes";
+	 }else {
+		 if(isValid(email)) {
+		 if(password.equals(repassword)){
 	 Connection con = connect();
 	 if (con == null)
 	 {return "Error while connecting to the database for inserting."; }
@@ -31,6 +37,7 @@ public class Register {
 	 String query = " insert into register(registerid,name,email,password,repassword)"+ " values (?,?, ?, ?, ?)";
 	 PreparedStatement preparedStmt = con.prepareStatement(query);
 	 // binding values
+	 
 	 preparedStmt.setInt(1, 0);
 	 preparedStmt.setString(2, name);
 	 preparedStmt.setString(3, email);
@@ -41,7 +48,16 @@ public class Register {
 	 preparedStmt.execute();
 	 con.close();
 	 output = "Inserted successfully";
+	  
+		 }else {
+			 output = "Inserted Unsuccessfully Different Password";
+		 }
+		 }else {
+			 output = "Updated Unsuccessfully.. Wrong email";
+		 }
 	 }
+	 }
+	 
 	 catch (Exception e)
 	 {
 	 output = "Error while inserting the register.";
@@ -49,6 +65,7 @@ public class Register {
 	 }
 	 return output;
 	 }
+	 
 	public String readItems()
 	 {
 	 String output = "";
@@ -102,6 +119,11 @@ public class Register {
 	 String output = "";
 	 try
 	 {
+		 if(name.isEmpty() || email.isEmpty() || password.isEmpty() || repassword.isEmpty()) {
+			 output = "Inserted Unsuccessfully..Please fill text Boxes";
+		 }else {
+		 if(isValid(email)) {
+		 if(password.equals(repassword)){
 	 Connection con = connect();
 	 if (con == null)
 	 {return "Error while connecting to the database for updating."; }
@@ -119,6 +141,13 @@ public class Register {
 	 preparedStmt.execute();
 	 con.close();
 	 output = "Updated successfully";
+		 }else {
+			 output = "Updated Unsuccessfully.. Different Password";
+		 }
+		 }else {
+			 output = "Updated Unsuccessfully.. Wrong email";
+		 }
+		 }
 	 }
 	 catch (Exception e)
 	 {
@@ -127,6 +156,19 @@ public class Register {
 	 }
 	 return output;
 	 }
+	
+	public static boolean isValid(String email)
+    {
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\."+
+                            "[a-zA-Z0-9_+&*-]+)*@" +
+                            "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
+                            "A-Z]{2,7}$";
+                              
+        Pattern pat = Pattern.compile(emailRegex);
+        if (email == null)
+            return false;
+        return pat.matcher(email).matches();
+    }
 	public String deleteRegister(String registerid)
 	 {
 	 String output = "";
