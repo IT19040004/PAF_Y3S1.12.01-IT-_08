@@ -22,6 +22,12 @@ public String insertPayment(String ItemID, String quantity, String payer, String
  String output = ""; 
  try
  { 
+	 
+  int x = Integer.parseInt(quantity);
+  if(ItemID.isEmpty() || quantity.isEmpty()||payer.isEmpty()||paymentMethod.isEmpty()||date.isEmpty()||amount.isEmpty()) {
+	  output = "Inserted Unsuccessfully You have empty Value";
+  }else {
+	 if(x == (int)x) {
  Connection con = connect(); 
  if (con == null) 
  {return "Error while connecting to the database for inserting."; } 
@@ -41,7 +47,11 @@ public String insertPayment(String ItemID, String quantity, String payer, String
  // execute the statement
  preparedStmt.execute(); 
  con.close(); 
- output = "Inserted successfully"; 
+ output = "Inserted successfully";
+	 }else {
+		 output = "Inserted Unsuccessfully..Reenter ";
+	 }
+  }
  } 
  catch (Exception e) 
  { 
@@ -103,6 +113,9 @@ public String updatePayment(String paymentID, String ItemID, String quantity, St
  String output = ""; 
  try
  { 
+	 if(ItemID.isEmpty() || quantity.isEmpty()||payer.isEmpty()||paymentMethod.isEmpty()||date.isEmpty()||amount.isEmpty()) {
+		  output = "Inserted Unsuccessfully You have empty Value";
+	  }else {
  Connection con = connect(); 
  if (con == null) 
  {return "Error while connecting to the database for updating."; } 
@@ -121,6 +134,7 @@ public String updatePayment(String paymentID, String ItemID, String quantity, St
  preparedStmt.execute(); 
  con.close(); 
  output = "Updated successfully"; 
+	  }
  } 
  catch (Exception e) 
  { 
