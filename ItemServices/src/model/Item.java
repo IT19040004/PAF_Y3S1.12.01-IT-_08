@@ -16,7 +16,7 @@ private Connection connect()
  {e.printStackTrace();} 
  return con; 
  } 
-public String insertItem(String code, String name, String price, String desc, String qua) 
+public String insertItem(String code, String name, String price, String desc, String qua,String country) 
  { 
  String output = ""; 
  try
@@ -25,8 +25,8 @@ public String insertItem(String code, String name, String price, String desc, St
  if (con == null) 
  {return "Error while connecting to the database for inserting."; } 
  // create a prepared statement
- String query = " insert into items (`itemID`,`itemCode`,`itemName`,`itemPrice`,`itemDesc`,`itemQuantity`)"
- + " values (?, ?, ?, ?, ?,?)"; 
+ String query = " insert into items (`itemID`,`itemCode`,`itemName`,`itemPrice`,`itemDesc`,`itemQuantity`,`itemCountry`)"
+ + " values (?, ?, ?, ?, ?,?,?)"; 
  PreparedStatement preparedStmt = con.prepareStatement(query); 
  // binding values
  preparedStmt.setInt(1, 0); 
@@ -35,6 +35,7 @@ public String insertItem(String code, String name, String price, String desc, St
  preparedStmt.setDouble(4, Double.parseDouble(price)); 
  preparedStmt.setString(5, desc); 
  preparedStmt.setString(6, qua); 
+ preparedStmt.setString(7, country); 
 // execute the statement3
  preparedStmt.execute(); 
  con.close(); 
@@ -60,6 +61,7 @@ public String readItems()
  "<th>Item Price</th>" + 
  "<th>Item Description</th>" +
  "<th>Item Quantity</th>" +
+ "<th>Item Country</th>" +
  "<th>Update</th><th>Remove</th></tr>"; 
  
  String query = "select * from items"; 
@@ -74,12 +76,15 @@ public String readItems()
  String itemPrice = Double.toString(rs.getDouble("itemPrice")); 
  String itemDesc = rs.getString("itemDesc"); 
  String itemQuantity = rs.getString("itemQuantity"); 
+ String itemCountry = rs.getString("itemCountry"); 
+ 
  // Add into the html table
  output += "<tr><td>" + itemCode + "</td>"; 
  output += "<td>" + itemName + "</td>"; 
  output += "<td>" + itemPrice + "</td>"; 
  output += "<td>" + itemDesc + "</td>"; 
  output += "<td>" + itemQuantity + "</td>";
+ output += "<td>" + itemCountry + "</td>";
  // buttons
  output += "<td><input name='btnUpdate' type='button' value='Update' class='btn btn-secondary'></td>"
  + "<td><form method='post' action='items.jsp'>"
@@ -98,7 +103,7 @@ public String readItems()
  } 
  return output; 
  } 
-public String updateItem(String ID, String code, String name, String price, String desc, String qua)
+public String updateItem(String ID, String code, String name, String price, String desc, String qua, String country)
  { 
  String output = ""; 
  try
@@ -107,7 +112,7 @@ public String updateItem(String ID, String code, String name, String price, Stri
  if (con == null) 
  {return "Error while connecting to the database for updating."; } 
  // create a prepared statement
- String query = "UPDATE items SET itemCode=?,itemName=?,itemPrice=?,itemDesc=?,itemQuantity=? WHERE itemID=?"; 
+ String query = "UPDATE items SET itemCode=?,itemName=?,itemPrice=?,itemDesc=?,itemQuantity=?, itemCountry=? WHERE itemID=?"; 
  PreparedStatement preparedStmt = con.prepareStatement(query); 
  // binding values
  preparedStmt.setString(1, code); 
@@ -115,7 +120,8 @@ public String updateItem(String ID, String code, String name, String price, Stri
  preparedStmt.setDouble(3, Double.parseDouble(price)); 
  preparedStmt.setString(4, desc); 
  preparedStmt.setString(5, qua);
- preparedStmt.setInt(6, Integer.parseInt(ID)); 
+ preparedStmt.setString(6, country);
+ preparedStmt.setInt(7, Integer.parseInt(ID)); 
  // execute the statement
  preparedStmt.execute(); 
  con.close(); 

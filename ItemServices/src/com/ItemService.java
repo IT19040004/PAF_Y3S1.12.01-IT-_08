@@ -31,9 +31,10 @@ public class ItemService {
 	 @FormParam("itemName") String itemName, 
 	 @FormParam("itemPrice") String itemPrice, 
 	 @FormParam("itemDesc") String itemDesc,
-	@FormParam("itemQuantity") String itemQuantity) 
+	@FormParam("itemQuantity") String itemQuantity,
+	@FormParam("itemCountry") String itemCountry) 
 	{ 
-	 String output = itemObj.insertItem(itemCode, itemName, itemPrice, itemDesc , itemQuantity); 
+	 String output = itemObj.insertItem(itemCode, itemName, itemPrice, itemDesc , itemQuantity, itemCountry); 
 	return output; 
 	}
 	
@@ -52,7 +53,8 @@ public class ItemService {
 	 String itemPrice = itemObject.get("itemPrice").getAsString(); 
 	 String itemDesc = itemObject.get("itemDesc").getAsString();
 	 String itemQuantity = itemObject.get("itemQuantity").getAsString(); 
-	 String output = itemObj.updateItem(itemID, itemCode, itemName, itemPrice, itemDesc, itemQuantity); 
+	 String itemCountry = itemObject.get("itemCountry").getAsString();
+	 String output = itemObj.updateItem(itemID, itemCode, itemName, itemPrice, itemDesc, itemQuantity,itemCountry ); 
 	return output; 
 	}
 	
