@@ -1,6 +1,7 @@
 package model;
 
 import java.sql.*;
+import java.util.regex.Pattern;
 
 public class Fund { // A common method to connect to the DB
 	private Connection connect() {
@@ -20,6 +21,9 @@ public class Fund { // A common method to connect to the DB
 			String description) {
 		String output = "";
 		try {
+			
+			if(phone.length() == 10) {
+				if(isValid(email)) {
 			Connection con = connect();
 			if (con == null) {
 				return "Error while connecting to the database for inserting.";
@@ -41,12 +45,32 @@ public class Fund { // A common method to connect to the DB
 			preparedStmt.execute();
 			con.close();
 			output = "Inserted successfully";
+				}else {
+					output = "Inserted Unsuccessfully..Invalid email";
+				}
+			}else {
+				output = "Inserted Unsuccessfully..Invalid Phone Number";
+			}
+		
 		} catch (Exception e) {
-			output = "Error while inserting the item.";
+			output = "Error while inserting the data.";
 			System.err.println(e.getMessage());
 		}
 		return output;
 	}
+	
+	public static boolean isValid(String email)
+    {
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\."+
+                            "[a-zA-Z0-9_+&*-]+)*@" +
+                            "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
+                            "A-Z]{2,7}$";
+                              
+        Pattern pat = Pattern.compile(emailRegex);
+        if (email == null)
+            return false;
+        return pat.matcher(email).matches();
+    }
 
 	public String readItems() {
 		String output = "";
@@ -98,6 +122,8 @@ public class Fund { // A common method to connect to the DB
 			String amount, String description) {
 		String output = "";
 		try {
+			if(phone.length() == 10) {
+				if(isValid(email)) {
 			Connection con = connect();
 			if (con == null) {
 				return "Error while connecting to the database for updating.";
@@ -120,6 +146,12 @@ public class Fund { // A common method to connect to the DB
 			preparedStmt.execute();
 			con.close();
 			output = "Updated successfully";
+				}else {
+					output = "Inserted Unsuccessfully..Invalid email";
+				}
+			}else {
+				output = "Inserted Unsuccessfully..Invalid Phone Number";
+			}
 		} catch (Exception e) {
 			output = "Error while updating the funds.";
 			System.err.println(e.getMessage());
