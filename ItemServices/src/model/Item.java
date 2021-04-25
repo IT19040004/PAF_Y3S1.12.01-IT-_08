@@ -31,7 +31,7 @@ else if  (!code.matches("[0-9]+")) {
  }
 else if (price.length() < 2) {
 	 
-	 output=" price should be greater than 2! ";
+	 output=" price should be greater than 99 ";
 }
 
 else if (desc.length()<20) {
